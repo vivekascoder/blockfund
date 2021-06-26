@@ -2,8 +2,8 @@
   <q-form>
     <q-input 
       type="number"
-      v-model="number"
-      @input:number="$emit('update:number', $event.target.value)"
+      :modelValue="number" 
+      @update:modelValue="event => $emit('update:number', event)"
       label="Enter a number."
       hint="Your secret number."
     />

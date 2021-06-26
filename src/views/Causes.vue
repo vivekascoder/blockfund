@@ -12,7 +12,7 @@
               </div>
             </q-card-section>
             <q-card-section>
-              <h3>{{ cause.value.balance }} ꜩ</h3>
+              <h3>{{ cause.value.balance/1000000 }} ꜩ</h3>
             </q-card-section>
             <q-separator dark />
             <q-card-actions>

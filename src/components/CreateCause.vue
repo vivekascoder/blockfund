@@ -5,7 +5,8 @@
     <h2>Crate a new cause on blockchain</h2>
       <q-input
         filled
-        v-model="title"
+        :modelValue="title"
+        @update:modelValue="(e) => $emit('update:title', e)"
         label="Cause Title "
         hint="Title for the cause."
       />
@@ -13,7 +14,8 @@
       <q-input
         filled
         type="number"
-        v-model="cause_id"
+        :modelValue="cause_id"
+        @update:modelValue="(e) => $emit('update:cause_id', parseInt(e))"
         label="Your Cause Id *"
       />
 

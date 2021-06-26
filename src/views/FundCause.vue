@@ -4,10 +4,11 @@
     <div class="row q-mx-auto justify-center q-mt-lg">
       <div class="col-6">
         <CauseFunder 
-          :amount="tezosAmount"
-          @submit="printAmount()"
+          v-model:amount="tezosAmount"
+          @submit="transferFunds()" 
+          @connectToWallet="connectToWallet()" 
         />
-        PArent: {{tezosAmount}}
+        Amount on Contract: {{contractBalance}}
       </div>
     </div>
   </div>
@@ -15,8 +16,7 @@
 
 <script>
 /*
-@submit="transferFunds()" 
-@connectToWallet="connectToWallet()" 
+
 */
 import { contractAddress } from "../config";
 import { TezosToolkit } from "@taquito/taquito";
@@ -31,53 +31,55 @@ export default {
   data() {
     return {
       Tezos: null,
-      tezosAmount: 0
+      tezosAmount: '',
+      contractBalance: 0
     }
   },
+  // async mounted() {
+  //   const tezos = new TezosToolkit('https://florencenet.smartpy.io')
+  //   const balance = await tezos.tz.getBalance(contractAddress)
+  //   this.contractBalance = balance
+  // },
   methods: {
-    printAmount() {
-      console.log(this.amount)
-    },
     async connectToWallet() {
       this.Tezos = new TezosToolkit("https://florencenet.smartpy.io");
       const wallet = new BeaconWallet({name: 'BlockFund'})
       this.wallet = await wallet.requestPermissions({network: {type: 'florencenet'}})
-      // this.Tezos.setProvider({signer: this.wallet})
       this.Tezos.setWalletProvider(wallet)
     },
     transferFunds(){
-      console.log('Pesa', this.amount)
-      this.Tezos.wallet
-      .transfer({to: contractAddress, amount: this.amount})
-      .send()
-      .then((op) => {
-        console.log(`Waiting for ${op.opHash} to be confirmed..`);
-        return op.confirmation().then(() => op.opHash)
-      })
-      .then(() => {console.log(Done);})
-      .catch((error) => console.log(`Error: ${error} ${JSON.stringify(error, null, 2)}`));
-      // if (!this.Tezos) {
-      //   return 
-      // }
+      // console.log('Pesa', this.tezosAmount)
       // this.Tezos.wallet
-      // .at(contractAddress)
-      // .then((c) => {
-      //   return c.methods.fund_cause(this.$route.params.cause_id).send(amount=this.amount*1000000)
-      // })
+      // .transfer({to: contractAddress, amount: parseInt(this.tezosAmount)})
+      // .send()
       // .then((op) => {
-      //   console.log(`Hash: ${op.opHash}`)
-      //   return op.confirmation()
+      //   console.log(`Waiting for ${op.opHash} to be confirmed..`);
+      //   return op.confirmation().then(() => op.opHash)
       // })
-      // .then((result) => {
-      //   if (result.completed) {
-      //     console.log(`Transaction correctly processed!
-      //     Block: ${result.block.header.level}
-      //     Chain ID: ${result.block.chain_id}`);
-      //   } else {
-      //     console.log('An error.')
-      //   }
-      // })
-      // .catch((error) => console.log(`Error: ${error.message}`));
+      // .then(() => {console.log("Done");})
+      // .catch((error) => console.log(`Error: ${error} ${JSON.stringify(error, null, 2)}`));
+      if (!this.Tezos) {
+        return 
+      }
+      this.Tezos.wallet
+      .at(contractAddress)
+      .then((c) => {
+        return c.methods.fund_cause(this.$route.params.cause_id).send({amount: this.tezosAmount})
+      })
+      .then((op) => {
+        console.log(`Hash: ${op.opHash}`)
+        return op.confirmation()
+      })
+      .then((result) => {
+        if (result.completed) {
+          console.log(`Transaction correctly processed!
+          Block: ${result.block.header.level}
+          Chain ID: ${result.block.chain_id}`);
+        } else {
+          console.log('An error.')
+        }
+      })
+      .catch((error) => console.log(`Error: ${error.message}`));
     }
   }
 };

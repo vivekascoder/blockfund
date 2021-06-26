@@ -6,7 +6,8 @@
       <q-input
         filled
         type="number"
-        v-model="amount"
+        :modelValue="amount"
+        @update:modelValue="(e) => $emit('update:amount', e)"
         label="Amount of tezos"
       />
       <p>
@@ -23,7 +24,7 @@
 export default {
   props: {
     amount: {
-      type: Number,
+      type: String,
       required: true
     },
   }

@@ -4,8 +4,8 @@
     <div class="row q-mx-auto justify-center q-mt-lg">
       <div class="col-6">
         <create-cause 
-          :title="title" 
-          :cause_id="cause_id" 
+          v-model:title="title" 
+          v-model:cause_id="cause_id" 
           @submit="createCause()" 
           @connectToWallet="connectToWallet()"
           />

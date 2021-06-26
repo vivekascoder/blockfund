@@ -1,7 +1,7 @@
 <template>
   <div class="about">
     <!-- <number :number="numberOne" @update:number="numberOne = $event" /> -->
-    <number v-model:number="numberOne" />
+    <Number v-model:number="numberOne" />
     <h1>This is an about page {{numberOne}}</h1>
   </div>
 </template>
@@ -13,6 +13,11 @@ export default {
   data() {
     return {
       numberOne: 0
+    }
+  },
+  methods: {
+    getNumber() {
+      console.log('Hello World')
     }
   }
 }
