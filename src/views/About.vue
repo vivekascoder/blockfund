@@ -1,5 +1,19 @@
 <template>
   <div class="about">
-    <h1>This is an about page</h1>
+    <!-- <number :number="numberOne" @update:number="numberOne = $event" /> -->
+    <number v-model:number="numberOne" />
+    <h1>This is an about page {{numberOne}}</h1>
   </div>
 </template>
+
+<script>
+import Number from '../components/Number.vue'
+export default {
+  components: { Number },
+  data() {
+    return {
+      numberOne: 0
+    }
+  }
+}
+</script>
