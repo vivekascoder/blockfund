@@ -11,14 +11,6 @@
         hint="Title for the cause."
       />
 
-      <q-input
-        filled
-        type="number"
-        :modelValue="cause_id"
-        @update:modelValue="(e) => $emit('update:cause_id', parseInt(e))"
-        label="Your Cause Id *"
-      />
-
       <div>
         <q-btn label="Submit" type="submit" color="primary" class="q-mr-lg"/>
         <q-btn label="Connect to Wallet" color="secondary" icon="money" @click="this.$emit('connectToWallet')"/>
@@ -29,10 +21,6 @@
 <script>
 export default {
   props: {
-    cause_id: {
-      type: Number,
-      required: true
-    },
     title: {
       type: String,
       required: true

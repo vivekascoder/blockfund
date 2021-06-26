@@ -3,12 +3,33 @@
     <p>{{ $route.params.cause_id }}</p>
     <div class="row q-mx-auto justify-center q-mt-lg">
       <div class="col-6">
-        <CauseFunder 
-          v-model:amount="tezosAmount"
-          @submit="transferFunds()" 
-          @connectToWallet="connectToWallet()" 
-        />
-        Amount on Contract: {{contractBalance}}
+        <div class="row q-mb-sm">
+          <div class="col">
+            <q-card class="my-card bg-primary text-white q-m-sm" v-if="cause">
+              <q-card-section>
+                <div class="text-h4 q-mb-md">
+                  Fund <strong>{{ cause.value.cause_title }}</strong>
+                </div>
+                <div class="text-subtitle2 q-mb-sm text-h6">
+                  <strong>Owner: </strong> {{ cause.value.owner }}
+                </div>
+                <div class="text-subtitle1">
+                  <strong>Funds:</strong> {{ cause.value.balance / 1000000 }} ꜩ
+                </div>
+              </q-card-section>
+              <q-separator dark />
+            </q-card>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <CauseFunder
+              v-model:amount="tezosAmount"
+              @submit="transferFunds()"
+              @connectToWallet="connectToWallet()"
+            />
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -20,20 +41,29 @@
 */
 import { contractAddress } from "../config";
 import { TezosToolkit } from "@taquito/taquito";
-import {BeaconWallet} from '@taquito/beacon-wallet'
-import CauseFunder from '../components/CauseFunder.vue';
+import { BeaconWallet } from "@taquito/beacon-wallet";
+import CauseFunder from "../components/CauseFunder.vue";
+import { api } from "../api";
 
 export default {
   name: "Home",
   components: {
-    CauseFunder
+    CauseFunder,
   },
   data() {
     return {
       Tezos: null,
-      tezosAmount: '',
-      contractBalance: 0
-    }
+      tezosAmount: "",
+      contractBalance: 0,
+      cause: null,
+    };
+  },
+  mounted() {
+    api
+      .get(`/v1/bigmaps/77305/keys/${this.$route.params.cause_id}`)
+      .then((response) => {
+        this.cause = response.data;
+      });
   },
   // async mounted() {
   //   const tezos = new TezosToolkit('https://florencenet.smartpy.io')
@@ -43,11 +73,13 @@ export default {
   methods: {
     async connectToWallet() {
       this.Tezos = new TezosToolkit("https://florencenet.smartpy.io");
-      const wallet = new BeaconWallet({name: 'BlockFund'})
-      this.wallet = await wallet.requestPermissions({network: {type: 'florencenet'}})
-      this.Tezos.setWalletProvider(wallet)
+      const wallet = new BeaconWallet({ name: "BlockFund" });
+      this.wallet = await wallet.requestPermissions({
+        network: { type: "florencenet" },
+      });
+      this.Tezos.setWalletProvider(wallet);
     },
-    transferFunds(){
+    transferFunds() {
       // console.log('Pesa', this.tezosAmount)
       // this.Tezos.wallet
       // .transfer({to: contractAddress, amount: parseInt(this.tezosAmount)})
@@ -59,32 +91,33 @@ export default {
       // .then(() => {console.log("Done");})
       // .catch((error) => console.log(`Error: ${error} ${JSON.stringify(error, null, 2)}`));
       if (!this.Tezos) {
-        return 
+        return;
       }
       this.Tezos.wallet
-      .at(contractAddress)
-      .then((c) => {
-        return c.methods.fund_cause(this.$route.params.cause_id).send({amount: this.tezosAmount})
-      })
-      .then((op) => {
-        console.log(`Hash: ${op.opHash}`)
-        return op.confirmation()
-      })
-      .then((result) => {
-        if (result.completed) {
-          console.log(`Transaction correctly processed!
+        .at(contractAddress)
+        .then((c) => {
+          return c.methods
+            .fund_cause(this.$route.params.cause_id)
+            .send({ amount: this.tezosAmount });
+        })
+        .then((op) => {
+          console.log(`Hash: ${op.opHash}`);
+          return op.confirmation();
+        })
+        .then((result) => {
+          if (result.completed) {
+            console.log(`Transaction correctly processed!
           Block: ${result.block.header.level}
           Chain ID: ${result.block.chain_id}`);
-        } else {
-          console.log('An error.')
-        }
-      })
-      .catch((error) => console.log(`Error: ${error.message}`));
-    }
-  }
+          } else {
+            console.log("An error.");
+          }
+        })
+        .catch((error) => console.log(`Error: ${error.message}`));
+    },
+  },
 };
 </script>
 
 <style>
-
 </style>
