@@ -28,6 +28,9 @@
               @submit="transferFunds()"
               @connectToWallet="connectToWallet()"
             />
+            <p v-if="hash" class="q-mt-lg">Hash: {{hash}}</p>
+            <p v-if="block">BlockId: {{block}}</p>
+            <p v-if="chainId">ChainId: {{chainId}}</p>
           </div>
         </div>
       </div>
@@ -56,6 +59,9 @@ export default {
       tezosAmount: "",
       contractBalance: 0,
       cause: null,
+      hash: '',
+      block: '',
+      chainId: ''
     };
   },
   mounted() {
@@ -102,6 +108,7 @@ export default {
         })
         .then((op) => {
           console.log(`Hash: ${op.opHash}`);
+          this.hash = op.opHash
           return op.confirmation();
         })
         .then((result) => {
@@ -109,6 +116,8 @@ export default {
             console.log(`Transaction correctly processed!
           Block: ${result.block.header.level}
           Chain ID: ${result.block.chain_id}`);
+          this.block = result.block.header.level
+          this.chainId = result.block.chain_id
           } else {
             console.log("An error.");
           }

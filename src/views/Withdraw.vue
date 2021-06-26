@@ -15,7 +15,7 @@
                 <strong>Owner: </strong> {{cause.value.owner}}
               </div>
               <div class="text-subtitle1">
-                <strong>Funds:</strong> {{cause.value.balance / 1000000}}
+                <strong>Funds:</strong> {{cause.value.balance / 1000000}} ꜩ
               </div>
             </q-card-section>
             <q-separator dark />
