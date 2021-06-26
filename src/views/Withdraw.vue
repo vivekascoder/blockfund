@@ -27,7 +27,7 @@ export default {
       this.Tezos.setWalletProvider(wallet)
     },
     withdrawFunds() {
-      if (!this.Tezos) return null
+      if (!this.Tezos) {return null}
       this.Tezos.wallet
         .at(contractAddress)
         .then((c) => {
