@@ -32,6 +32,21 @@
               >
             </q-card-actions>
           </q-card>
+          <q-banner inline-actions class="text-white bg-green q-mt-md" v-if="hash">
+            <p class="text-h6">Transfer Initiated</p>
+            <p>
+              <strong>Hash: </strong> {{hash}}
+            </p>
+            <p v-if="block">
+              <strong>BlockId: </strong>{{block}}
+            </p>
+            <p v-if="chainId">
+              <strong>Chain Id: </strong>{{chainId}}
+            </p>
+            <template v-slot:action>
+              <q-btn flat color="white" to="/" label="Goto Home" />
+            </template>
+          </q-banner>
           <q-banner inline-actions class="text-white bg-red q-mt-md" v-if="error">
             {{error}}
             <template v-slot:action>
