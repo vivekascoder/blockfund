@@ -1,11 +1,15 @@
 <h1 align="center">
 BlockFund
 </h1>
+<p align="center">
+Raise crypto for social causes, and make a better future.
+</p>
 
 ## 🦾 Table of Contents
 - [🦾 Table of Contents](#-table-of-contents)
 - [💚 What is BlockFund ?](#-what-is-blockfund-)
 - [❔ How does it work ?](#-how-does-it-work-)
+- [Presentaion (PPT)](#presentaion-ppt)
 - [🛠️ Tools Used](#️-tools-used)
   - [💄 Frontend](#-frontend)
   - [📦️ Backend / Blockchain](#️-backend--blockchain)
@@ -26,6 +30,9 @@ Blockfund is a Decentralized FundRaising Platform for social causes. It's build 
 - **Step 1:** A organization or a person can create a cause for which he/she wants to raise funds for. 
 - **Step 2:** Then other people who wants to donate to that cause can send the XTZ from there wallet.
 - **Step 3:** Then the owner (Only Owner) who created the cause can withdraw the funds.
+
+## Presentaion (PPT)
+- Link: https://docs.google.com/presentation/d/1WCpCja077epZIomLPrFGimFfzQ3mLUDslD2Zij5fxvw/edit?usp=sharing
 
 ## 🛠️ Tools Used
 ![](./src/assets/BlockFund.png)
