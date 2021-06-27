@@ -32,6 +32,12 @@
               >
             </q-card-actions>
           </q-card>
+          <q-banner inline-actions class="text-white bg-red q-mt-md" v-if="error">
+            {{error}}
+            <template v-slot:action>
+              <q-btn flat color="white" to="/" label="Goto Home" />
+            </template>
+          </q-banner>
         </div>
       </div>
     </div>
@@ -49,6 +55,10 @@ export default {
     return {
       Tezos: null,
       cause: null,
+      hash: '',
+      block: '',
+      chainId: '',
+      error: ''
     };
   },
   mounted() {
@@ -78,6 +88,7 @@ export default {
         })
         .then((op) => {
           console.log(`Hash: ${op.opHash}`);
+          this.hash = op.opHash
           return op.confirmation();
         })
         .then((result) => {
@@ -85,11 +96,16 @@ export default {
             console.log(`Transaction correctly processed!
             Block: ${result.block.header.level}
             Chain ID: ${result.block.chain_id}`);
+            this.block = result.block.header.level
+            this.chainId = result.block.chain_id
           } else {
             console.log("An error.");
           }
         })
-        .catch((err) => console.log(`Error: ${err.message}`));
+        .catch((err) => {
+          console.log(`Error: ${err.message}`)
+          this.error = "You can't withdraw the funds."
+        });
     },
   },
 };
