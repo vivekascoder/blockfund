@@ -100,3 +100,7 @@ Initially i was thinking to use `Azure` but then Linode was a MLH sponser and th
 - **Twitter:** https://twitter.com/vivekascoder
 - **Discord:** https://discord.gg/8dC7QAF6r8
 - **Personal Blog:** https://blog.divcorn.com
+
+💰️ Support the project development 
+Ξ Ethereum: 0xAF5D27A3095C545CfB4357E5e1061ADe2Ea8911C
+ꜩ Tezos: tz1UxnruUqq2demYbAHsHkZ2VV95PV8MXVGq
